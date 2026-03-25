@@ -1,6 +1,7 @@
 """예매 확인 / 결제 / 취소 핸들러."""
 import logging
-import subprocess
+# 푸쉬 알람 설정 시 주석을 푸세요
+#import subprocess
 import inquirer
 from termcolor import colored
 from ...rail.base import AbstractRail
