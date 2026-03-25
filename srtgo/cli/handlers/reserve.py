@@ -1,7 +1,7 @@
 """예매 흐름 핸들러."""
 
 import logging
-# 푸쉬알람을 원하면 subprocess가 들어간 부분은 주석을 푸세요
+# 푸쉬 알람 설정 시 주석을 푸세요
 #import subprocess
 from datetime import datetime, timedelta
 
@@ -149,11 +149,17 @@ def handle_reserve(rail: AbstractRail, rail_type: str) -> None:
         if hasattr(reservation, "tickets") and reservation.tickets:
             msg += "\n" + "\n".join(map(str, reservation.tickets))
         print(colored(f"\n\n🎫 🎉 예매 성공!!! 🎉 🎫\n{msg}\n", "red", "on_green"))
-        #subprocess.run(["termux-notification", "--title", "\n\n🎫 🎉 예매 성공!!! 🎉 🎫\n{msg}\n", ...])
+        try:
+            subprocess.run(["termux-notification", "--title", "🎫 예매 성공!", "--content", msg, "--vibrate", "1000"], check=False)
+        except FileNotFoundError:
+            pass
         if do_pay and not getattr(reservation, "is_waiting", False):
             if pay_with_saved_card(rail, reservation):
                 print(colored("\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", "green", "on_red"), end="")
-                #subprocess.run(["termux-notification", "--title", "\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", ...])
+                try:
+                    subprocess.run(["termux-notification", "--title", "💳 결제 성공!", "--content", "열차 결제가 완료되었습니다", "--vibrate", "1000"], check=False)
+                except FileNotFoundError:
+                    pass
                 msg += "\n결제 완료"
         send_telegram(msg)
 
@@ -170,7 +176,10 @@ def handle_reserve(rail: AbstractRail, rail_type: str) -> None:
         if any(s in msg for s in ignorable):
             return True
         logger.error("예매 중 오류: %s", ex)
-        #subprocess.run(["termux-notification", "--title", "❌ 오류 발생", "--content", str(ex), ...])
+        try:
+            subprocess.run(["termux-notification", "--title", "❌ 오류 발생", "--content", str(ex), "--vibrate", "500"], check=False)
+        except FileNotFoundError:
+            pass
         send_telegram(msg)
         result = inquirer.prompt(confirm_continue_prompt("계속할까요"))
         return bool(result and result["confirmed"])
