@@ -32,3 +32,5 @@ https://f-droid.org/ko/packages/com.termux.api/
 termux.api는 푸쉬알람 원하면 설치 (설정 > "play" 검색 > Google play 프로텍트에서 검사 일시중지해야 설치됨)  
 pkg install termux-api  
 우분투에서 ln -s /data/data/com.termux/files/usr/bin/termux-notification /usr/local/bin/termux-notification  
+/srtgo/cli/handlers/ 에서 check.py, reserve.py 편집  
+  -> Ctrl + F -> subprocess 모두 찾아서 주석 제거(# 지우면됨)  
