@@ -18,6 +18,9 @@ source ~/.bashrc
 
 # 4. 레포 클론 및 설치 (tls-client/curl_cffi 제외)
 git clone https://github.com/songpagi94/macro_spg  
+cd macro_spg  
+uv venv  
+source .venv/bin/activate  
 uv pip install -e .  
 
 # 5. 실행
