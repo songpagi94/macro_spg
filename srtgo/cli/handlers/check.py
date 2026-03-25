@@ -62,7 +62,7 @@ def handle_check_reservation(rail: AbstractRail, rail_type: str) -> None:
             if action_result["action"] == 1:
                 if pay_with_saved_card(rail, item):
                     print(colored("\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", "green", "on_red"), end="")
-                    subprocess.run(["termux-notification", "--title", "\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", ...])
+                    #subprocess.run(["termux-notification", "--title", "\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", ...])
             elif action_result["action"] == 2:
                 rail.cancel(item)
             return
@@ -76,7 +76,7 @@ def handle_check_reservation(rail: AbstractRail, rail_type: str) -> None:
                     rail.cancel(item)
             except Exception as e:
                 logger.error("취소/환불 실패: %s", e)
-                subprocess.run(["termux-notification", "--title", "❌ 오류 발생", "--content", str(ex), ...])
+                #subprocess.run(["termux-notification", "--title", "❌ 오류 발생", "--content", str(ex), ...])
                 raise
         return
 
