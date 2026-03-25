@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "srtgo"
+version = "0.1.0"
 authors = [
     {name = "DKim", email = "lapis42@gmail.com"},
 ]
