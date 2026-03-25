@@ -29,6 +29,8 @@ _NEEDS_RAIL_TYPE = {1, 2, 3, 6, 7}
 @click.option("--debug", is_flag=True, help="Debug mode")
 def srtgo(debug: bool = False) -> None:
     setup_logging(debug=debug)
+    if not debug:
+        logging.getLogger().setLevel(logging.WARNING)
     logger.info("srtgo 시작 (debug=%s)", debug)
 
     while True:
