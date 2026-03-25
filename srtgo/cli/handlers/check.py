@@ -1,7 +1,7 @@
 """예매 확인 / 결제 / 취소 핸들러."""
 
 import logging
-# 알람을 원하면 주석을 푸세요
+# 푸쉬알람을 원하면 subprocess가 들어간 부분은 주석을 푸세요
 #import subprocess
 
 import inquirer
