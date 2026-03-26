@@ -32,21 +32,23 @@ def _create_with_creds(rail_type: str, user_id: str, password: str, debug: bool)
 
 
 def handle_set_login(rail_type: str, debug: bool = False) -> bool:
-    user_id, password = get_rail_credential(rail_type)
-    result = inquirer.prompt(login_prompt(rail_type, user_id or "", password or ""))
-    if not result:
-        return False
+    print(f"\n--- {rail_type} 로그인 설정 ---")
     try:
-        rail = _create_with_creds(rail_type, result["id"], result["pass"], debug)
+        user_id = input(f"{rail_type} 아이디 (멤버십/이메일/번호): ").strip()
+        password = input(f"{rail_type} 패스워드: ").strip()
+        
+        if not user_id or not password:
+            return False
+
+        rail = _create_with_creds(rail_type, user_id, password, debug)
         if not rail.is_login:
-            raise RuntimeError("로그인에 실패했습니다. 아이디/비밀번호를 확인하세요.")
-        set_rail_credential(rail_type, result["id"], result["pass"])
-        logger.info("로그인 설정 완료: rail_type=%s", rail_type)
+            raise RuntimeError("로그인에 실패했습니다.")
+            
+        set_rail_credential(rail_type, user_id, password)
+        print("✅ 로그인 설정 완료!")
         return True
     except Exception as e:
-        logger.error("로그인 설정 실패: %s", e)
-        print(str(e))
-        delete_rail_credential(rail_type)
+        print(f"❌ 오류: {e}")
         return False
 
 
@@ -67,13 +69,23 @@ def handle_set_telegram() -> bool:
 
 
 def handle_set_card() -> bool:
-    existing = get_card_info() or {}
-    result = inquirer.prompt(card_prompt(existing))
-    if not result:
+    print("\n--- 신용카드 설정 ---")
+    try:
+        number = input("신용카드 번호 (하이픈 제외): ").strip()
+        password = input("카드 비밀번호 앞 2자리: ").strip()
+        birthday = input("생년월일 (YYMMDD) / 사업자번호: ").strip()
+        expire = input("카드 유효기간 (YYMM): ").strip()
+        
+        if not all([number, password, birthday, expire]):
+            print("입력되지 않은 정보가 있어 설정을 취소합니다.")
+            return False
+
+        set_card_info(number, password, birthday, expire)
+        logger.info("카드 설정 완료")
+        print("✅ 카드 정보가 성공적으로 저장되었습니다.")
+        return True
+    except EOFError: # Ctrl+C 대응
         return False
-    set_card_info(result["number"], result["password"], result["birthday"], result["expire"])
-    logger.info("카드 설정 완료")
-    return True
 
 
 def handle_set_station(rail_type: str) -> bool:
