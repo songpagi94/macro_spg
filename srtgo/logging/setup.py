@@ -29,7 +29,7 @@ def setup_logging(debug: bool = False) -> None:
         backupCount=3,
         encoding="utf-8",
     )
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG if debug else logging.WARNING)
     file_handler.setFormatter(FileFormatter())
     file_handler.addFilter(SensitiveDataFilter())
 
