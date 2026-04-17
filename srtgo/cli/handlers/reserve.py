@@ -149,10 +149,10 @@ def handle_reserve(rail: AbstractRail, rail_type: str) -> None:
         if hasattr(reservation, "tickets") and reservation.tickets:
             msg += "\n" + "\n".join(map(str, reservation.tickets))
         print(colored(f"\n\n🎫 🎉 예매 성공!!! 🎉 🎫\n{msg}\n", "red", "on_green"))
-        try:
-            subprocess.run(["termux-notification", "--title", "🎫 예매 성공!", "--content", msg, "--vibrate", "1000"], check=False)
-        except FileNotFoundError:
-            pass
+        #try:
+            #subprocess.run(["termux-notification", "--title", "🎫 예매 성공!", "--content", msg, "--vibrate", "1000"], check=False)
+        #except FileNotFoundError:
+            #pass
         if do_pay and not getattr(reservation, "is_waiting", False):
             if pay_with_saved_card(rail, reservation):
                 print(colored("\n\n💳 ✨ 결제 성공!!! ✨ 💳\n\n", "green", "on_red"), end="")
